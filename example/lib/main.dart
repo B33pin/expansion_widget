@@ -69,6 +69,7 @@ class _HomePageState extends State<HomePage> {
           Card(
             clipBehavior: Clip.hardEdge,
             child: ExpansionWidget(
+                curve: Curves.bounceInOut,
                 onSaveState: (value) => _expanded2 = value,
                 onRestoreState: () => _expanded2,
                 duration: const Duration(seconds: 1),

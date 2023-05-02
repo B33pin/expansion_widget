@@ -18,6 +18,7 @@ class ExpansionWidget extends StatefulWidget {
     this.maintainState = false,
     this.expandedAlignment = Alignment.center,
     this.onSaveState,
+    this.curve = Curves.easeIn,
     this.onRestoreState,
     this.duration = const Duration(milliseconds: 200),
   }) : super(key: key);
@@ -55,6 +56,7 @@ class ExpansionWidget extends StatefulWidget {
   /// Return false to prevent expanded state to change.
   /// Return true(default) to allow expanded state changing.
   final bool Function(bool)? onExpansionWillChange;
+  final Curve curve;
 
   /// The widget that are displayed when the expansionWidget expands.
   final Widget content;
@@ -86,8 +88,7 @@ class ExpansionWidget extends StatefulWidget {
 
 class ExpansionWidgetState extends State<ExpansionWidget>
     with SingleTickerProviderStateMixin {
-  static final Animatable<double> _easeInTween =
-      CurveTween(curve: Curves.easeIn);
+  late final Animatable<double> _easeInTween;
 
   late AnimationController _controller;
   late Animation<double> _heightFactor;
@@ -97,6 +98,7 @@ class ExpansionWidgetState extends State<ExpansionWidget>
   @override
   void initState() {
     super.initState();
+    _easeInTween = CurveTween(curve: widget.curve);
     _controller = AnimationController(duration: widget.duration, vsync: this);
     _heightFactor = _controller.drive(_easeInTween);
 
