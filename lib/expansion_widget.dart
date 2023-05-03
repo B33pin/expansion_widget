@@ -19,6 +19,7 @@ class ExpansionWidget extends StatefulWidget {
     this.expandedAlignment = Alignment.center,
     this.onSaveState,
     this.curve = Curves.easeIn,
+    this.overlapWidget,
     this.onRestoreState,
     this.duration = const Duration(milliseconds: 200),
   }) : super(key: key);
@@ -60,6 +61,9 @@ class ExpansionWidget extends StatefulWidget {
 
   /// The widget that are displayed when the expansionWidget expands.
   final Widget content;
+
+  //a wigdet that is overlapped
+  final Widget? overlapWidget;
 
   /// Specifies if the expansionWidget is initially expanded (true) or collapsed (false, the default).
   final bool initiallyExpanded;
@@ -161,12 +165,18 @@ class ExpansionWidgetState extends State<ExpansionWidget>
       children: <Widget>[
         widget.titleBuilder(
             _controller.value, _heightFactor.value, _isExpanded, toggle),
-        ClipRect(
-          child: Align(
-            alignment: widget.expandedAlignment,
-            heightFactor: _heightFactor.value,
-            child: child,
-          ),
+        Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            ClipRect(
+              child: Align(
+                alignment: widget.expandedAlignment,
+                heightFactor: _heightFactor.value,
+                child: child,
+              ),
+            ),
+            widget.overlapWidget ?? SizedBox()
+          ],
         ),
       ],
     );
